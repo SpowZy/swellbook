@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: swellbook-db
+    environment:
+      POSTGRES_USER: swellbook
+      POSTGRES_PASSWORD: swellbook
+      POSTGRES_DB: swellbook
+    ports:
+      - "5433:5432"
+    volumes:
+      - swellbook_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U swellbook -d swellbook"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+
+volumes:
+  swellbook_pgdata:
