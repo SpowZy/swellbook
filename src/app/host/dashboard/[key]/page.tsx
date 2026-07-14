@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getHostDashboard } from "@/lib/repo/listings";
 import { money, shortDate } from "@/lib/format";
 import { BlockDatesForm, CancelBlockButton } from "@/components/BlockControls";
-import { CoverArt } from "@/components/CoverArt";
+import { Cover } from "@/components/Cover";
 
 export const dynamic = "force-dynamic";
 
@@ -40,8 +40,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ key:
             className="mt-8 overflow-hidden rounded-2xl border border-line bg-shell"
           >
             <div className="flex items-center gap-4 border-b border-line p-4">
-              <div className="h-14 w-20 shrink-0 overflow-hidden rounded-lg">
-                <CoverArt hue={listing.hue} />
+              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
+                <Cover
+                  coverUrl={listing.coverUrl}
+                  hue={listing.hue}
+                  alt={listing.name}
+                  sizes="80px"
+                />
               </div>
               <div className="min-w-0">
                 <h2 className="truncate font-display text-xl font-semibold">{listing.name}</h2>

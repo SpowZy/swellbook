@@ -52,11 +52,21 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer className="border-t border-line bg-sand/40">
-          <div className="mx-auto w-full max-w-6xl px-4 py-6 text-sm text-ink-soft sm:px-6">
+          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-baseline justify-between gap-2 px-4 py-6 text-sm text-ink-soft sm:px-6">
             <p>
-              Swellbook is a working demo built by SpowZy as his founding-engineer
-              application to bluepina. Every listing here is fictional, every booking is real inside
-              the demo database.
+              <span className="font-display text-base font-semibold text-ink">
+                swellbook<span className="text-coral">.</span>
+              </span>{" "}
+              Travel that keeps its soul, and hosts who keep their margins.
+            </p>
+            <p>
+              Built end to end by{" "}
+              <a
+                href="https://github.com/SpowZy"
+                className="font-medium text-ocean hover:underline"
+              >
+                SpowZy
+              </a>
             </p>
           </div>
         </footer>

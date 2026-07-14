@@ -20,6 +20,7 @@ export type Listing = {
   hostStory: string;
   hostName: string;
   hue: number;
+  coverUrl: string | null;
 };
 
 export type SearchResult = {
@@ -45,6 +46,7 @@ function rowToListing(row: Record<string, unknown>): Listing {
     hostStory: String(row.host_story),
     hostName: String(row.host_name ?? ""),
     hue: Number(row.hue),
+    coverUrl: row.cover_url ? String(row.cover_url) : null,
   };
 }
 

@@ -1,16 +1,38 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getListingBySlug } from "@/lib/repo/listings";
 import { vibeLabel } from "@/lib/vibes";
 import { BookingWidget } from "@/components/BookingWidget";
-import { CoverArt } from "@/components/CoverArt";
+import { Cover } from "@/components/Cover";
 
 export const dynamic = "force-dynamic";
 
-export default async function StayPage({ params }: { params: Promise<{ slug: string }> }) {
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string; to?: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const listing = await getListingBySlug(slug);
+  if (!listing) return { title: "Stay not found" };
+  return {
+    title: `${listing.name} · Swellbook`,
+    description: listing.story.slice(0, 160),
+  };
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export default async function StayPage({ params, searchParams }: Props) {
+  const { slug } = await params;
+  const sp = await searchParams;
+  const listing = await getListingBySlug(slug);
   if (!listing) notFound();
+
+  const initialCheckIn = sp.from && ISO_DATE.test(sp.from) ? sp.from : "";
+  const initialCheckOut = sp.to && ISO_DATE.test(sp.to) ? sp.to : "";
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
@@ -21,8 +43,14 @@ export default async function StayPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <div className="mt-4 overflow-hidden rounded-3xl border border-line">
-        <div className="aspect-[21/9]">
-          <CoverArt hue={listing.hue} />
+        <div className="relative aspect-[16/9] sm:aspect-[21/9]">
+          <Cover
+            coverUrl={listing.coverUrl}
+            hue={listing.hue}
+            alt={`${listing.name}, ${listing.place}`}
+            sizes="(max-width: 1152px) 100vw, 1152px"
+            priority
+          />
         </div>
       </div>
 
@@ -65,6 +93,8 @@ export default async function StayPage({ params }: { params: Promise<{ slug: str
             currency={listing.currency}
             capacity={listing.capacity}
             bookedRanges={listing.bookedRanges}
+            initialCheckIn={initialCheckIn}
+            initialCheckOut={initialCheckOut}
           />
         </div>
       </div>

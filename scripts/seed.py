@@ -90,6 +90,7 @@ def main() -> int:
                 "capacity": max(1, int(row["capacity"] or 1)),
                 "story": row["story"].strip(),
                 "hue": int(row["hue"] or 200) % 360,
+                "cover": (row.get("cover") or "").strip(),
             })
 
     lines = [
@@ -101,15 +102,16 @@ def main() -> int:
         slug = "".join(ch if ch.isalnum() else "-" for ch in slug_source.lower())
         slug = "-".join(filter(None, slug.split("-")))[:60]
         vibe_array = "ARRAY[" + ",".join(sql_quote(v) for v in item["vibes"]) + "]::text[]"
+        cover_sql = sql_quote(item["cover"]) if item["cover"] else "NULL"
         lines.append(
             "WITH host_row AS (INSERT INTO hosts (name, story, dashboard_key) VALUES ("
             f"{sql_quote(item['host_name'])}, {sql_quote(item['host_story'])}, "
             f"{sql_quote(demo_key(item['host_name'], item['place']))}) RETURNING id)\n"
             "INSERT INTO listings (host_id, slug, name, place, country, vibe_tags, "
-            "price_per_night_cents, capacity, story, host_story, hue)\n"
+            "price_per_night_cents, capacity, story, host_story, hue, cover_url)\n"
             f"SELECT id, {sql_quote(slug)}, {sql_quote(item['name'])}, {sql_quote(item['place'])}, "
             f"{sql_quote(item['country'])}, {vibe_array}, {item['price_cents']}, {item['capacity']}, "
-            f"{sql_quote(item['story'])}, {sql_quote(item['host_story'])}, {item['hue']} FROM host_row;"
+            f"{sql_quote(item['story'])}, {sql_quote(item['host_story'])}, {item['hue']}, {cover_sql} FROM host_row;"
         )
     lines.append("COMMIT;")
     OUT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")

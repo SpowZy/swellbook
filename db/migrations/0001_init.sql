@@ -27,6 +27,8 @@ CREATE TABLE listings (
   story TEXT NOT NULL DEFAULT '',
   host_story TEXT NOT NULL DEFAULT '',
   hue INT NOT NULL DEFAULT 200,
+  -- Local path to a real cover photo; NULL falls back to generated cover art.
+  cover_url TEXT,
   published BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

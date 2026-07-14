@@ -54,7 +54,7 @@ Node.js, TypeScript, Next.js (App Router), PostgreSQL, Tailwind, and a little Py
 
 - **Plain SQL with node-postgres, no ORM.** The correctness story lives in the schema; hiding it behind an abstraction would make the most important code the hardest to read.
 - **`scripts/seed.py`** turns a deliberately messy CSV export (duplicate rows, "$68" next to "75.00", tags in random case) into clean, deterministic seed SQL, the way real listing data actually arrives.
-- **Generated cover art** (SVG keyed on a hue the host picks) keeps the demo self-contained. Production gets real photos; empty listings still get their own light.
+- **Real photography, self-contained.** The seeded catalog uses free-license Unsplash photos committed into the repo (credits in `public/covers/CREDITS.md`), served through `next/image`. Listings created through the wizard get generated SVG cover art (a hue the host picks) until photo upload ships, so nothing ever looks broken.
 - **Transparent ranking.** Discovery scoring is a handful of explainable points (vibe overlap, budget fit, availability filter), not a black box. At catalog scale it becomes a learned ranker; the explainability stays.
 
 ## Run it locally

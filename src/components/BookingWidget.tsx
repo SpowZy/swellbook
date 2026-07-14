@@ -32,17 +32,21 @@ export function BookingWidget({
   currency,
   capacity,
   bookedRanges,
+  initialCheckIn = "",
+  initialCheckOut = "",
 }: {
   listingSlug: string;
   pricePerNightCents: number;
   currency: string;
   capacity: number;
   bookedRanges: BookedRange[];
+  initialCheckIn?: string;
+  initialCheckOut?: string;
 }) {
   const router = useRouter();
   const today = new Date().toISOString().slice(0, 10);
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState(initialCheckIn);
+  const [checkOut, setCheckOut] = useState(initialCheckOut);
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [phase, setPhase] = useState<Phase>({ name: "idle" });

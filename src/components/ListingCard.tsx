@@ -2,22 +2,40 @@ import Link from "next/link";
 import type { SearchResult } from "@/lib/repo/listings";
 import { money } from "@/lib/format";
 import { vibeLabel } from "@/lib/vibes";
-import { CoverArt } from "./CoverArt";
+import { Cover } from "./Cover";
 
-export function ListingCard({ result, searching }: { result: SearchResult; searching: boolean }) {
+export function ListingCard({
+  result,
+  searching,
+  dates,
+}: {
+  result: SearchResult;
+  searching: boolean;
+  dates?: { from: string; to: string } | null;
+}) {
   const { listing, matchedVibes, withinBudget } = result;
   const matchNotes = [
     ...matchedVibes.map(vibeLabel),
     ...(withinBudget ? ["in budget"] : []),
   ];
+  // Carry the searched dates onto the listing page so the booking widget
+  // is already filled in when the traveler lands on it.
+  const href = dates
+    ? `/stay/${listing.slug}?from=${dates.from}&to=${dates.to}`
+    : `/stay/${listing.slug}`;
 
   return (
     <Link
-      href={`/stay/${listing.slug}`}
+      href={href}
       className="group block overflow-hidden rounded-2xl border border-line bg-shell shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
-        <CoverArt hue={listing.hue} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+        <Cover
+          coverUrl={listing.coverUrl}
+          hue={listing.hue}
+          alt={`${listing.name}, ${listing.place}`}
+          className="transition-transform duration-500 group-hover:scale-[1.03]"
+        />
         {searching && matchNotes.length > 0 && (
           <span className="absolute left-3 top-3 rounded-full bg-moss-mist/95 px-2.5 py-1 text-xs font-semibold text-moss">
             Great match: {matchNotes.join(", ")}

@@ -61,7 +61,12 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
         ) : (
           <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((result) => (
-              <ListingCard key={result.listing.id} result={result} searching={searching} />
+              <ListingCard
+                key={result.listing.id}
+                result={result}
+                searching={searching}
+                dates={checkIn && checkOut ? { from: checkIn, to: checkOut } : null}
+              />
             ))}
           </div>
         )}
