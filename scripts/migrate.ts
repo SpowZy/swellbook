@@ -18,6 +18,16 @@ async function main() {
   const seed = process.argv.includes("--seed");
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL is not set (copy .env.example to .env)");
+  if (fresh) {
+    const host = new URL(url).hostname;
+    const isLocal = host === "localhost" || host === "127.0.0.1";
+    if (!isLocal && process.env.ALLOW_REMOTE_FRESH !== "1") {
+      throw new Error(
+        `--fresh would DROP the schema on remote host "${host}". ` +
+          "Refusing. Set ALLOW_REMOTE_FRESH=1 only if you truly mean it."
+      );
+    }
+  }
 
   const client = new Client({ connectionString: url });
   await client.connect();
