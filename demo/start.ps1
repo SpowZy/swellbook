@@ -1,14 +1,9 @@
-# One-shot Swellbook demo launcher (Windows). ONE window does everything:
-# it boots the stack, opens the browser, then stays as a tiny console where
-# single keys drive the whole demo (race, reset, reopen tabs).
+# One-shot Swellbook demo launcher (Windows). ONE command, ONE window:
+# demo\start.cmd boots the whole stack, opens the browser, then stays as a
+# tiny console where single keys drive the entire demo:
+#   [C] race   [R] reset to pristine   [O] reopen tabs   [S] stop all   [Q] quit
 #
-#   demo\start.cmd     the only command you need
-#   demo\reset.cmd     same, but wipes the database first
-#   demo\stop.cmd      stops the app server
-#   demo\race.cmd      the race in its own window (optional, console has it too)
-#   -Build             force a rebuild of the production bundle
-#   -NoBrowser         do not open browser tabs
-#   -NoConsole         exit after boot instead of showing the console
+#   -Reset / -Build / -NoBrowser / -NoConsole / -StopOnly for automation
 
 param(
     [switch]$Reset,
@@ -132,10 +127,11 @@ function Show-Console {
     Write-Host '    [C] run the race on camera: 25 attempts, 1 winner' -ForegroundColor Gray
     Write-Host '    [R] reset: pristine database between takes, tabs reopen' -ForegroundColor Gray
     Write-Host '    [O] reopen the two browser tabs' -ForegroundColor Gray
+    Write-Host '    [S] stop everything and close' -ForegroundColor Gray
     Write-Host '    [Q] quit this console (the site keeps running)' -ForegroundColor Gray
     Write-Host ''
     while ($true) {
-        Write-Host -NoNewline '  swellbook> press C / R / O / Q ' -ForegroundColor Cyan
+        Write-Host -NoNewline '  swellbook> press C / R / O / S / Q ' -ForegroundColor Cyan
         $key = [Console]::ReadKey($true)
         Write-Host $key.KeyChar
         switch -Regex ($key.KeyChar.ToString().ToUpper()) {
@@ -151,8 +147,13 @@ function Show-Console {
                 Write-Host ''
             }
             'O' { Open-Tabs; Write-Host '' }
+            'S' {
+                Stop-AppServer | Out-Null
+                Write-Ok 'server stopped, bye'
+                return
+            }
             'Q' {
-                Write-Ok 'console closed, the site is still running (demo\stop.cmd to stop it)'
+                Write-Ok 'console closed, the site is still running (rerun start.cmd to get the console back)'
                 return
             }
         }
