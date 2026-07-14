@@ -125,7 +125,7 @@ function Invoke-FullReset {
 function Show-Console {
     Write-Host '  ONE window, single keys:' -ForegroundColor Gray
     Write-Host '    [C] run the race on camera: 25 attempts, 1 winner' -ForegroundColor Gray
-    Write-Host '    [R] reset: pristine database between takes, tabs reopen' -ForegroundColor Gray
+    Write-Host '    [R] reset: pristine database between takes (your tabs stay, just press F5)' -ForegroundColor Gray
     Write-Host '    [O] reopen the two browser tabs' -ForegroundColor Gray
     Write-Host '    [S] stop everything and close' -ForegroundColor Gray
     Write-Host '    [Q] quit this console (the site keeps running)' -ForegroundColor Gray
@@ -142,8 +142,7 @@ function Show-Console {
             }
             'R' {
                 Invoke-FullReset
-                Open-Tabs
-                Write-Ok 'pristine and ready for the next take'
+                Write-Ok 'pristine and ready for the next take: press F5 in your browser tabs'
                 Write-Host ''
             }
             'O' { Open-Tabs; Write-Host '' }
