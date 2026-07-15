@@ -137,7 +137,7 @@ function Show-Console {
         switch -Regex ($key.KeyChar.ToString().ToUpper()) {
             'C' {
                 Write-Host ''
-                cmd /c "pnpm race"
+                cmd /c "pnpm exec tsx scripts/race.ts"
                 Write-Host ''
             }
             'R' {
