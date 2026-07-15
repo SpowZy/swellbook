@@ -48,3 +48,8 @@ demo/logs/
 
 .vercel
 .env*
+
+# agent tooling artifacts (Neon integration)
+.agents/
+.claude/
+skills-lock.json
