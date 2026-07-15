@@ -10,7 +10,14 @@ export function getPool(): Pool {
     if (!connectionString) {
       throw new Error("DATABASE_URL is not set (copy .env.example to .env)");
     }
-    globalForDb.pgPool = new Pool({ connectionString, max: 10 });
+    const host = new URL(connectionString).hostname;
+    const isLocal = host === "localhost" || host === "127.0.0.1";
+    globalForDb.pgPool = new Pool({
+      connectionString,
+      max: 10,
+      // Managed Postgres (Neon) requires TLS; local Docker does not speak it.
+      ssl: isLocal ? undefined : { rejectUnauthorized: true },
+    });
   }
   return globalForDb.pgPool;
 }
