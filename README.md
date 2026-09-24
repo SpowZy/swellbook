@@ -1,6 +1,6 @@
 # Swellbook
 
-**A working slice of a zero-commission discovery and booking platform for surf camps, retreats and small lodges. Built in 48 hours by [SpowZy](https://github.com/SpowZy) as a founding-engineer application to bluepina.**
+**A working slice of a zero-commission discovery and booking platform for surf camps, retreats and small lodges. Built by [SpowZy](https://github.com/SpowZy), founder of Prestilink.**
 
 Live demo: **https://swellbook.vercel.app**
 
@@ -84,4 +84,4 @@ In priority order: real payments (Stripe Connect, with the ledger and payout sta
 
 ## Honest scope notes
 
-This is a 48-hour vertical slice, and some corners are explicitly demo-grade: the host dashboard is behind an unguessable private link instead of real auth, cover art stands in for photos, payments are represented by the hold-confirm boundary, and hold sweeping happens inside booking transactions rather than a background job. Every one of these has a clear production path, and none of them touch the core guarantee: the calendar cannot lie.
+This is a vertical slice, and some corners are deliberately simplified: the host dashboard is behind an unguessable private link instead of real auth, cover art stands in for photos, payments are represented by the hold-confirm boundary, and hold sweeping happens inside booking transactions rather than a background job. Every one of these has a clear production path, and none of them touch the core guarantee: the calendar cannot lie.
